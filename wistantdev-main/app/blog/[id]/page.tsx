@@ -1,0 +1,179 @@
+import React from 'react';
+import {notFound} from 'next/navigation';
+import Link from 'next/link';
+import Image from 'next/image';
+import {Metadata} from 'next';
+import {ArrowLeft, BookOpen, Calendar, User} from 'lucide-react';
+import {Badge} from '@/components/ui/badge';
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {blogPosts} from '@/lib/blogData';
+import {siteUrl} from '@/lib/siteConfig';
+
+type Props = {
+    params: { id: string };
+};
+
+export async function generateMetadata({params}: Props): Promise<Metadata> {
+    const id = Number(params.id);
+    const post = blogPosts.find(p => p.id === id);
+
+  if (!post) {
+      return {
+          title: 'Article non trouvé',
+          robots: {index: false, follow: true},
+      };
+  }
+
+    const postUrl = `${siteUrl}/blog/${post.id}`;
+    const imageUrl = new URL(post.image || '/og-image.png', siteUrl).toString();
+
+    return {
+        title: post.title,
+        description: post.excerpt,
+        authors: [{name: post.author, url: siteUrl}],
+        alternates: {
+            canonical: postUrl,
+        },
+        openGraph: {
+            title: post.title,
+            description: post.excerpt,
+            url: postUrl,
+            type: 'article',
+            publishedTime: post.publishedAt,
+            authors: [post.author],
+            images: [
+                {
+                    url: imageUrl,
+                    alt: post.title,
+                },
+            ],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: post.title,
+            description: post.excerpt,
+            images: [imageUrl],
+        },
+    };
+}
+
+const BlogPostPage = ({params}: Props) => {
+    const post = blogPosts.find(p => p.id === Number(params.id));
+
+    if (!post) {
+        notFound();
+  }
+
+  const formatDate = (dateString: string) => {
+      return new Date(dateString).toLocaleDateString('fr-FR', {
+      year: 'numeric',
+      month: 'long',
+          day: 'numeric',
+    });
+  };
+
+    const postUrl = `${siteUrl}/blog/${post.id}`;
+    const imageUrl = new URL(post.image || '/og-image.png', siteUrl).toString();
+
+    const jsonLd: object = {
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        headline: post.title,
+        name: post.title,
+        description: post.excerpt,
+        datePublished: post.publishedAt,
+        author: {
+            '@type': 'Person',
+            name: post.author,
+            url: siteUrl,
+        },
+        image: imageUrl,
+        url: postUrl,
+        publisher: {
+            '@type': 'Person',
+            name: 'Muhammad Uneeb',
+        },
+        mainEntityOfPage: {
+            '@type': 'WebPage',
+            '@id': postUrl,
+        },
+    };
+
+  return (
+      <>
+          <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{__html: JSON.stringify(jsonLd).replace(/</g, "\\u003c")}}
+          />
+      <section className="py-20 bg-background min-h-screen">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
+            <div className="lg:col-span-3">
+              <Link href="/blog" className="inline-flex items-center text-primary hover:text-primary-glow transition-colors mb-8">
+                <ArrowLeft className="w-5 h-5 mr-2" />
+                  Back to articles
+              </Link>
+
+                {post.image && (
+                    <div className="w-full h-80 overflow-hidden rounded-lg mb-8 shadow-lg relative">
+                        <Image
+                            src={post.image}
+                            alt={post.title}
+                            fill
+                            sizes="(min-width: 1024px) 75vw, 100vw"
+                            className="object-cover"
+                            priority
+                        />
+                </div>
+              )}
+
+              <h1 className="text-4xl md:text-5xl font-bold text-text-primary mb-4 leading-tight">
+                {post.title}
+              </h1>
+
+              <div className="flex flex-wrap items-center text-text-secondary text-sm mb-8 space-x-4">
+                  <div className="flex items-center gap-1"><User className="w-4 h-4"/><span>{post.author}</span></div>
+                  <div className="flex items-center gap-1"><Calendar
+                      className="w-4 h-4"/><span>{formatDate(post.publishedAt)}</span></div>
+                  {post.readingTime && <div className="flex items-center gap-1"><BookOpen
+                      className="w-4 h-4"/><span>{post.readingTime} min de lecture</span></div>}
+                  <Badge variant="secondary" className="text-xs">{post.category}</Badge>
+              </div>
+
+                <div
+                className="prose prose-invert max-w-none text-text-secondary leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: post.content }}
+              />
+
+              {post.tags && post.tags.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-10 border-t border-border pt-6">
+                    {post.tags.map((tag) => <Badge key={tag} variant="outline"
+                                                   className="text-xs px-3 py-1">#{tag}</Badge>)}
+                </div>
+              )}
+
+              <Card className="bg-gradient-card border border-border-light mt-10 p-6">
+                  <CardHeader className="p-0 mb-4"><CardTitle className="text-xl font-bold text-text-primary">About the Author</CardTitle></CardHeader>
+                <CardContent className="p-0 flex items-center">
+                    <div className="w-16 h-16 rounded-full mr-4 border-2 border-primary relative overflow-hidden">
+                        <div className="w-full h-full bg-primary/10 flex items-center justify-center font-bold text-primary">MU</div>
+                    </div>
+                  <div>
+                    <p className="font-semibold text-text-primary">Muhammad Uneeb</p>
+                      <p className="text-sm text-text-secondary">Creative Web Designer & Developer</p>
+                      <p className="text-sm text-text-muted mt-1">WordPress development, Figma-to-WordPress design, website audits, and on-page SEO.</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+            <div className="lg:col-span-1">
+                {/* Le composant de la table des matières reste ici */}
+            </div>
+          </div>
+        </div>
+      </section>
+      </>
+  );
+};
+
+export default BlogPostPage;
