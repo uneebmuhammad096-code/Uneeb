@@ -71,7 +71,7 @@ const Footer = () => {
                 >
                   <div>
                     <h3 className="text-2xl font-bold bg-primary bg-clip-text text-transparent">
-                      &lt; Muhammad Uneeb /&gt;
+                      &lt; Muhammad Uneeb &gt;
                     </h3>
                     <p className="text-sm text-muted-foreground mt-2">
                       Creative Web Designer & Developer
