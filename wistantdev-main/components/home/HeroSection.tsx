@@ -25,7 +25,7 @@ interface ActionButton {
 }
 
 const socialLinks: SocialLink[] = [
-    { name: "LinkedIn", url: "https://www.linkedin.com/in/muhammad-uneeb-4563a3388", icon: Linkedin },
+    { name: "LinkedIn", url: "https://www.linkedin.com/in/muhammad-uneeb-dev", icon: Linkedin },
     { name: "Email", url: "mailto:uneebmuhammad096@gmail.com", icon: Mail },
     { name: "Phone", url: "tel:0304-0987062", icon: Phone },
 ];

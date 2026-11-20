@@ -21,7 +21,7 @@ const Footer = () => {
   const socialLinks = [
     { 
       name: 'LinkedIn', 
-      href: 'https://www.linkedin.com/in/muhammad-uneeb-4563a3388', 
+      href: 'https://www.linkedin.com/in/muhammad-uneeb-dev', 
       icon: Linkedin,
       color: 'hover:text-[#0077B5]' 
     },

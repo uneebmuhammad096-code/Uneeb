@@ -21,7 +21,7 @@ const personSchema = {
     "Website audits",
     "On-page SEO",
   ],
-  sameAs: ["https://www.linkedin.com/in/muhammad-uneeb-4563a3388"],
+  sameAs: ["https://www.linkedin.com/in/muhammad-uneeb-dev"],
 };
 
 export default function HomePage() {
