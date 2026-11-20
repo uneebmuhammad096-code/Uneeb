@@ -7,7 +7,8 @@ interface TimelineItemData {
     title: string;
     institution: string;
     date: string;
-    description: string;
+    description?: string;
+    responsibilities?: string[];
 }
 
 const professionalExperiences: TimelineItemData[] = [
@@ -16,6 +17,16 @@ const professionalExperiences: TimelineItemData[] = [
         institution: "Co Build Ltd",
         date: "July 2026 - Present",
         description: "Build and customize WordPress websites with Elementor, translate Figma designs into responsive pages, and contribute to website audits and on-page SEO.",
+    },
+    {
+        title: "UI/UX Management & Team Leader",
+        institution: "Tec Joint - Lahore, Pakistan",
+        date: "October 2025 - April 2026",
+        responsibilities: [
+            "Supported team operations and coordinated tasks.",
+            "Assisted in project management and timely task completion.",
+            "Helped maintain team coordination and workflow.",
+        ],
     },
 ];
 
@@ -42,7 +53,16 @@ function TimelineItem({item, isLast}: {item: TimelineItemData; isLast: boolean})
                 <p className="text-primary font-medium mb-1 text-sm">{item.date}</p>
                 <h4 className="font-semibold text-text-primary mb-1 title3">{item.title}</h4>
                 <p className="text-text-secondary font-medium mb-2 text-sm">{item.institution}</p>
-                <p className="text-text-secondary title1 text-sm">{item.description}</p>
+                {item.description && (
+                    <p className="text-text-secondary title1 text-sm">{item.description}</p>
+                )}
+                {item.responsibilities && (
+                    <ul className="list-disc pl-5 text-text-secondary title1 text-sm space-y-1">
+                        {item.responsibilities.map((responsibility) => (
+                            <li key={responsibility}>{responsibility}</li>
+                        ))}
+                    </ul>
+                )}
             </div>
         </div>
     );
