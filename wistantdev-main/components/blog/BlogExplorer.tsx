@@ -11,8 +11,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { blogPosts, type BlogPost } from "@/lib/blogData";
 
-const STORAGE_KEY = "uneeb-blog-posts";
-const categories = ["All", "AI", "WordPress", "Web Development", "UI/UX", "JavaScript", "SEO"];
+const STORAGE_KEY = "uneeb-blog-posts-v2";
+const categories = ["All", "WordPress Development", "Web Development", "UI/UX Design", "Technical SEO", "AI & Tools", "Design & Branding"];
 
 const formatDate = (date: string) => new Intl.DateTimeFormat("en", { month: "short", day: "numeric", year: "numeric" }).format(new Date(date));
 const slugify = (value: string) => value.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
@@ -26,7 +26,7 @@ export default function BlogExplorer() {
     const [editorOpen, setEditorOpen] = useState(false);
     const [editing, setEditing] = useState<BlogPost | null>(null);
     const [form, setForm] = useState({
-        title: "", excerpt: "", metaDescription: "", category: "AI", image: "", imageAlt: "", content: "", status: "draft" as BlogPost["status"],
+        title: "", metaTitle: "", excerpt: "", metaDescription: "", category: "WordPress Development", image: "", imageAlt: "", content: "", status: "draft" as BlogPost["status"],
     });
 
     useEffect(() => {
@@ -59,14 +59,14 @@ export default function BlogExplorer() {
 
     const openNew = () => {
         setEditing(null);
-        setForm({ title: "", excerpt: "", metaDescription: "", category: "AI", image: "", imageAlt: "", content: "", status: "draft" });
+        setForm({ title: "", metaTitle: "", excerpt: "", metaDescription: "", category: "WordPress Development", image: "", imageAlt: "", content: "", status: "draft" });
         setEditorOpen(true);
     };
 
     const openEdit = (post: BlogPost) => {
         setEditing(post);
         setForm({
-            title: post.title, excerpt: post.excerpt, metaDescription: post.metaDescription,
+            title: post.title, metaTitle: post.metaTitle, excerpt: post.excerpt, metaDescription: post.metaDescription,
             category: post.category, image: post.image, imageAlt: post.imageAlt,
             content: post.content.replace(/<[^>]+>/g, ""), status: post.status,
         });
@@ -80,6 +80,7 @@ export default function BlogExplorer() {
             id: editing?.id || Math.max(0, ...posts.map(post => post.id)) + 1,
             slug: editing?.slug || slugify(form.title),
             title: form.title.trim(),
+            metaTitle: form.metaTitle.trim() || form.title.trim(),
             excerpt: form.excerpt.trim(),
             metaDescription: form.metaDescription.trim() || form.excerpt.trim(),
             content: `<p>${form.content.trim().replace(/\n\n/g, "</p><p>").replace(/\n/g, "<br />")}</p>`,
@@ -108,7 +109,7 @@ export default function BlogExplorer() {
                     <div>
                         <Badge variant="secondary" className="mb-4 px-3 py-1 text-primary">Insights & Ideas</Badge>
                         <h1 className="mb-4 text-4xl font-bold text-text-primary md:text-6xl title3">The Journal</h1>
-                        <p className="max-w-2xl text-base text-text-secondary md:text-lg title1">Practical thinking on AI, WordPress, web development, UI/UX, JavaScript and SEO.</p>
+                        <p className="max-w-2xl text-base text-text-secondary md:text-lg title1">Practical insights on WordPress development, web development, UI/UX design, technical SEO, AI tools and brand design.</p>
                     </div>
                     <Button onClick={openNew} className="w-fit"><Plus className="mr-2 h-4 w-4" />New article</Button>
                 </div>
@@ -178,6 +179,7 @@ export default function BlogExplorer() {
                     <DialogHeader><DialogTitle>{editing ? "Edit article" : "Create article"}</DialogTitle><DialogDescription>Add SEO details and publish or save the article as a draft.</DialogDescription></DialogHeader>
                     <div className="grid gap-4 py-2">
                         <Input value={form.title} onChange={event => setForm({ ...form, title: event.target.value })} placeholder="Article title" />
+                        <Input value={form.metaTitle} onChange={event => setForm({ ...form, metaTitle: event.target.value })} placeholder="Unique SEO meta title" />
                         <Textarea value={form.excerpt} onChange={event => setForm({ ...form, excerpt: event.target.value })} placeholder="Short excerpt" />
                         <Textarea value={form.metaDescription} onChange={event => setForm({ ...form, metaDescription: event.target.value })} placeholder="SEO meta description" />
                         <div className="grid gap-4 sm:grid-cols-2">

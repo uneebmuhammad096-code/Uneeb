@@ -23,7 +23,7 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
 
   if (!post) {
       return {
-          title: 'Article non trouvé',
+          title: 'Article Not Found',
           robots: {index: false, follow: true},
       };
   }
@@ -32,14 +32,14 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
     const imageUrl = new URL(post.image || '/og-image.png', siteUrl).toString();
 
     return {
-        title: post.title,
+        title: post.metaTitle,
         description: post.metaDescription,
         authors: [{name: post.author, url: siteUrl}],
         alternates: {
             canonical: postUrl,
         },
         openGraph: {
-            title: post.title,
+            title: post.metaTitle,
             description: post.metaDescription,
             url: postUrl,
             type: 'article',
@@ -54,8 +54,8 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
         },
         twitter: {
             card: 'summary_large_image',
-            title: post.title,
-            description: post.excerpt,
+            title: post.metaTitle,
+            description: post.metaDescription,
             images: [imageUrl],
         },
     };
@@ -87,6 +87,9 @@ const BlogPostPage = async ({params}: Props) => {
         name: post.title,
         description: post.metaDescription,
         datePublished: post.publishedAt,
+        dateModified: post.publishedAt,
+        inLanguage: 'en-US',
+        keywords: post.tags.join(', '),
         author: {
             '@type': 'Person',
             name: post.author,
@@ -170,6 +173,18 @@ const BlogPostPage = async ({params}: Props) => {
                   </div>
                 </CardContent>
               </Card>
+
+              <div className="mt-10">
+                  <h2 className="mb-5 text-2xl font-bold text-text-primary">Continue reading</h2>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                      {blogPosts.filter(item => item.id !== post.id).slice(0, 2).map(item => (
+                          <Link key={item.id} href={`/blog/${item.slug}`} className="group rounded-xl border border-border-light bg-gradient-card p-5 transition-colors hover:border-primary/50">
+                              <span className="mb-2 block text-xs font-semibold text-primary">{item.category}</span>
+                              <span className="font-semibold leading-snug text-text-primary group-hover:text-primary">{item.title}</span>
+                          </Link>
+                      ))}
+                  </div>
+              </div>
             </div>
             <div className="lg:col-span-1">
                 {/* Le composant de la table des matières reste ici */}
