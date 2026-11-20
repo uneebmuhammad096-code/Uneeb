@@ -21,7 +21,7 @@ const AboutMe = () => (
                 >
                     <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">
                         <span className="bg-clip-text">
-                            &lt; About Me /&gt;
+                            &lt; About Me &gt;
                         </span>
                     </h2>
                     <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto font-light leading-relaxed">
