@@ -10,12 +10,16 @@ import {blogPosts} from '@/lib/blogData';
 import {siteUrl} from '@/lib/siteConfig';
 
 type Props = {
-    params: { id: string };
+    params: Promise<{ slug: string }>;
 };
 
+export function generateStaticParams() {
+    return blogPosts.map(post => ({slug: post.slug}));
+}
+
 export async function generateMetadata({params}: Props): Promise<Metadata> {
-    const id = Number(params.id);
-    const post = blogPosts.find(p => p.id === id);
+    const {slug} = await params;
+    const post = blogPosts.find(p => p.slug === slug || String(p.id) === slug);
 
   if (!post) {
       return {
@@ -24,19 +28,19 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
       };
   }
 
-    const postUrl = `${siteUrl}/blog/${post.id}`;
+    const postUrl = `${siteUrl}/blog/${post.slug}`;
     const imageUrl = new URL(post.image || '/og-image.png', siteUrl).toString();
 
     return {
         title: post.title,
-        description: post.excerpt,
+        description: post.metaDescription,
         authors: [{name: post.author, url: siteUrl}],
         alternates: {
             canonical: postUrl,
         },
         openGraph: {
             title: post.title,
-            description: post.excerpt,
+            description: post.metaDescription,
             url: postUrl,
             type: 'article',
             publishedTime: post.publishedAt,
@@ -44,7 +48,7 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
             images: [
                 {
                     url: imageUrl,
-                    alt: post.title,
+                    alt: post.imageAlt,
                 },
             ],
         },
@@ -57,22 +61,23 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
     };
 }
 
-const BlogPostPage = ({params}: Props) => {
-    const post = blogPosts.find(p => p.id === Number(params.id));
+const BlogPostPage = async ({params}: Props) => {
+    const {slug} = await params;
+    const post = blogPosts.find(p => p.slug === slug || String(p.id) === slug);
 
     if (!post) {
         notFound();
   }
 
   const formatDate = (dateString: string) => {
-      return new Date(dateString).toLocaleDateString('fr-FR', {
+      return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
           day: 'numeric',
     });
   };
 
-    const postUrl = `${siteUrl}/blog/${post.id}`;
+    const postUrl = `${siteUrl}/blog/${post.slug}`;
     const imageUrl = new URL(post.image || '/og-image.png', siteUrl).toString();
 
     const jsonLd: object = {
@@ -80,7 +85,7 @@ const BlogPostPage = ({params}: Props) => {
         '@type': 'BlogPosting',
         headline: post.title,
         name: post.title,
-        description: post.excerpt,
+        description: post.metaDescription,
         datePublished: post.publishedAt,
         author: {
             '@type': 'Person',
@@ -118,7 +123,7 @@ const BlogPostPage = ({params}: Props) => {
                     <div className="w-full h-80 overflow-hidden rounded-lg mb-8 shadow-lg relative">
                         <Image
                             src={post.image}
-                            alt={post.title}
+                            alt={post.imageAlt}
                             fill
                             sizes="(min-width: 1024px) 75vw, 100vw"
                             className="object-cover"
@@ -136,7 +141,7 @@ const BlogPostPage = ({params}: Props) => {
                   <div className="flex items-center gap-1"><Calendar
                       className="w-4 h-4"/><span>{formatDate(post.publishedAt)}</span></div>
                   {post.readingTime && <div className="flex items-center gap-1"><BookOpen
-                      className="w-4 h-4"/><span>{post.readingTime} min de lecture</span></div>}
+                      className="w-4 h-4"/><span>{post.readingTime} min read</span></div>}
                   <Badge variant="secondary" className="text-xs">{post.category}</Badge>
               </div>
 
