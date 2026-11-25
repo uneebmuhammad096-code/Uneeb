@@ -31,7 +31,7 @@ const CallToAction = () => {
                 className="border-border-light hover:border-primary hover:bg-primary/10"
               >
                 <a
-                  href="https://wa.me/+237697135341"
+                  href="https://wa.me/923040987062"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

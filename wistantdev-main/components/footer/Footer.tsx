@@ -33,7 +33,7 @@ const Footer = () => {
     },
     {
       name: 'Phone',
-      href: 'tel:0304-0987062',
+      href: 'tel:+923040987062',
       icon: Phone,
       color: 'hover:text-primary',
     },

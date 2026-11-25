@@ -45,7 +45,7 @@ const data = () => ({
     { icon: Twitter, label: 'Twitter', href: '#' },
     { icon: Github, label: 'GitHub', href: '#' },
     { icon: MessageCircle, label: 'Discord', href: '#' },
-    { icon: Linkedin, label: 'LinkedIn', href: '#' },
+    { icon: Linkedin, label: 'LinkedIn', href: 'https://www.linkedin.com/in/muhammad-uneeb-dev' },
   ],
   bottomLinks: [
     { href: '/privacy', label: 'Privacy Policy' },

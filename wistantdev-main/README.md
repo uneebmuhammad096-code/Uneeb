@@ -172,7 +172,7 @@ For security concerns, please refer to [SECURITY.md](SECURITY.md).
 
 ## 📧 Contact
 
-**Wistant Kode** - [LinkedIn](https://linkedin.com/in/wistant) - [Twitter](https://twitter.com/wistantkode)
+**Muhammad Uneeb** - [LinkedIn](https://www.linkedin.com/in/muhammad-uneeb-dev) - [Twitter](https://twitter.com/wistantkode)
 
 Project Link: [https://github.com/WistantKode/my-dev-portfolio](https://github.com/WistantKode/my-dev-portfolio)
 

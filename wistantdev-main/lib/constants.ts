@@ -20,7 +20,7 @@ export const PERSONAL_INFO = {
     subtitle: "Full-Stack Developer & UI/UX Enthusiast",
     email: "wistantkode@protonmail.com",
     github: "https://github.com/wistantkode",
-    linkedin: "https://www.linkedin.com/in/wistantkode/",
+    linkedin: "https://www.linkedin.com/in/muhammad-uneeb-dev",
     twitter: "https://x.com/wistantkode",
     location: "Douala, Cameroun",
     bio: "Développeur passionné avec plus de 4 ans d'expérience dans la création d'applications web et mobiles performantes",
@@ -142,8 +142,8 @@ export const CONTACT_INFO = [
     {
         icon: Phone,
         title: "Téléphone",
-        value: "+237 69 56 03 938",
-        href: "tel:+237695603938",
+        value: "+92 304 0987062",
+        href: "tel:+923040987062",
     },
     {
         icon: MapPin,

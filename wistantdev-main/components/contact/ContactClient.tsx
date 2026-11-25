@@ -26,7 +26,7 @@ const ContactClient = () => {
 
     const contactInfo = [
         { icon: Mail, title: "Email", value: "uneebmuhammad096@gmail.com", link: "mailto:uneebmuhammad096@gmail.com" },
-        { icon: Phone, title: "Phone", value: "0304-0987062", link: "tel:0304-0987062" },
+        { icon: Phone, title: "Phone", value: "+92 304 0987062", link: "tel:+923040987062" },
         { icon: MapPin, title: "Location", value: "Thokar Naiz Baig, Lahore", link: null },
     ];
 
