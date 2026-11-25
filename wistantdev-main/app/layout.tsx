@@ -23,6 +23,9 @@ const siteConfig = {
 
 export const metadata: Metadata = {
     metadataBase: new URL(siteConfig.url),
+    verification: {
+        google: "r9OxUuDVUNa2JTBhcICAMSBHOPXHLzgBrwtduN5YAxs",
+    },
     title: {
         default: siteConfig.title,
         template: `%s | Muhammad Uneeb`,
